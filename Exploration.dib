@@ -1,0 +1,20 @@
+#!fsharp
+
+#r "nuget: Ionide.ProjInfo"
+
+#!fsharp
+
+open Ionide.ProjInfo
+open System.IO
+
+let toolsPath = Init.init (DirectoryInfo Environment.CurrentDirectory) None
+let props =  [ ("Configuration", "Debug") ]
+let workspaceLoader = WorkspaceLoader.Create (toolsPath, props)
+let samplePath = Path.Join(Environment.CurrentDirectory, "Sample", "Sample.fsproj")
+
+
+workspaceLoader.Notifications.Add (printfn "%A")
+
+workspaceLoader.LoadProjects [samplePath]
+|> Seq.toArray
+|> Array.length
